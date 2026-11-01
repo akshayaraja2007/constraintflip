@@ -1,0 +1,58 @@
+# Compiled C++ executables
+*.exe
+*.out
+*.o
+*.obj
+*.dll
+*.so
+*.a
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# Temporary validation files
+validation/alt_valid_*.cpp
+validation/alt_valid_*.exe
+validation/wrong_*.cpp
+validation/wrong_*.exe
+validation/bad_compile.cpp
+validation/bad_compile.exe
+validation/runtime_error.cpp
+validation/runtime_error.exe
+validation/timeout.cpp
+validation/timeout.exe
+
+# Generated temporary files
+*.tmp
+*.log
+
+# IDE and editor
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+
+# Coverage and test caches
+.coverage
+.pytest_cache/
+htmlcov/
+
+# Backup files
+*.bak
+*.old
+*~

@@ -1,0 +1,18 @@
+{
+  "id": "T02",
+  "title": "Signed Array Subarray Sum",
+  "category": "subarray",
+  "expected_algorithm": "prefix_sum_hash_map",
+  "difficulty": "medium",
+  "constraints": {
+    "n": "1 <= n <= 200000",
+    "ai": "-10^9 <= ai <= 10^9",
+    "k": "-10^18 <= k <= 10^18"
+  },
+  "input_format": "The first line contains n and k. The second line contains n integers a1..an, which may be zero, positive, or negative.",
+  "output_format": "Print a single integer: the number of subarrays whose sum is exactly k.",
+  "notes": [
+    "Values may be negative, zero, or positive.",
+    "This task is the signed counterpart to T01 and intentionally invalidates sliding-window logic."
+  ]
+}

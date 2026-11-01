@@ -1,0 +1,18 @@
+{
+  "id": "T07",
+  "title": "Any Valid Topological Ordering",
+  "category": "graph",
+  "expected_algorithm": "kahn",
+  "difficulty": "easy",
+  "constraints": {
+    "n": "1 <= n <= 200000",
+    "m": "0 <= m <= 200000",
+    "edges": "Directed graph with possible duplicate edges."
+  },
+  "input_format": "The first line contains n and m. Each of the next m lines contains two integers u and v, representing a directed edge from u to v.",
+  "output_format": "Print a valid topological ordering of the n vertices as n integers, or IMPOSSIBLE if the graph contains a cycle.",
+  "notes": [
+    "Any valid ordering is accepted.",
+    "Duplicate edges should be handled gracefully."
+  ]
+}

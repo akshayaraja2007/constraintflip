@@ -1,0 +1,18 @@
+{
+  "id": "T08",
+  "title": "Lexicographically Smallest Topological Ordering",
+  "category": "graph",
+  "expected_algorithm": "kahn_min_heap",
+  "difficulty": "medium",
+  "constraints": {
+    "n": "1 <= n <= 200000",
+    "m": "0 <= m <= 200000",
+    "edges": "Directed graph with possible duplicate edges."
+  },
+  "input_format": "The first line contains n and m. Each of the next m lines contains two integers u and v, representing a directed edge from u to v.",
+  "output_format": "Print the lexicographically smallest valid topological ordering as n integers, or IMPOSSIBLE if the graph contains a cycle.",
+  "notes": [
+    "This task differs from T07 by requiring the smallest lexicographic ordering among all valid topological sorts.",
+    "A min-heap is the intended implementation."
+  ]
+}

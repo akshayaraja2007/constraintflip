@@ -1,0 +1,19 @@
+{
+  "id": "T05",
+  "title": "Nonnegative Weighted Shortest Paths",
+  "category": "graph",
+  "expected_algorithm": "dijkstra",
+  "difficulty": "medium",
+  "constraints": {
+    "n": "1 <= n <= 200000",
+    "m": "0 <= m <= 200000",
+    "w": "0 <= w <= 10^9",
+    "src": "1 <= src <= n"
+  },
+  "input_format": "The first line contains n, m, and src. Each of the next m lines contains u, v, w describing a directed edge from u to v of weight w.",
+  "output_format": "Print n integers: the shortest distance from src to every vertex, or -1 if unreachable. Each distance is printed on its own line.",
+  "notes": [
+    "All edge weights are nonnegative.",
+    "This task expects Dijkstra's algorithm."
+  ]
+}

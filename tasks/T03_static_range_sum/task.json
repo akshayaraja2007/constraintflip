@@ -1,0 +1,19 @@
+{
+  "id": "T03",
+  "title": "Static Range Sum",
+  "category": "range_query",
+  "expected_algorithm": "prefix_sum",
+  "difficulty": "easy",
+  "constraints": {
+    "n": "1 <= n <= 200000",
+    "m": "1 <= m <= 200000",
+    "ai": "-10^9 <= ai <= 10^9",
+    "l,r": "1 <= l <= r <= n"
+  },
+  "input_format": "The first line contains n and m. The second line contains n integers a1..an. Each of the next m lines contains two integers l and r (1-indexed).",
+  "output_format": "For each query, print the sum of the subarray a[l..r].",
+  "notes": [
+    "The array is static: no updates are made.",
+    "This task expects prefix sums."
+  ]
+}

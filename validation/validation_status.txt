@@ -1,0 +1,10 @@
+ConstraintFlip validation status: FAIL
+
+Reason:
+- Historical validation logs preserved under validation/logs/ show multiple failing stages.
+- T01 public and grader checks previously failed and were repaired in code.
+- Negative-test C++ generation bug was repaired in code.
+- Differential coverage was corrected to include T01 and explicit per-task counts.
+- No fresh successful end-to-end validation run has been recorded after these fixes.
+
+The project is not in a PASS state.

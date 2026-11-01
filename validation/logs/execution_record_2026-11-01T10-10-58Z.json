@@ -1,0 +1,151 @@
+{
+  "generated_at_utc": "2026-11-01T10:10:58Z",
+  "root": "C:\\Users\\acer\\OneDrive\\Desktop\\ConstraintFlip",
+  "summary": {
+    "stages_attempted": 9,
+    "stages_successful": 8,
+    "stages_failed": 1,
+    "total_test_cases_executed": 1658
+  },
+  "stages": [
+    {
+      "stage": "compile_references",
+      "command": [
+        "C:\\Users\\acer\\AppData\\Local\\Programs\\Python\\Python314\\python.exe",
+        "-c",
+        "\nimport subprocess\nfrom pathlib import Path\n\nroot = Path(r\"C:\\Users\\acer\\OneDrive\\Desktop\\ConstraintFlip\\reference\")\n\nsources = sorted(root.glob(\"T*.cpp\"))\n\nif len(sources) != 8:\n    raise SystemExit(\n        f\"Expected 8 reference solutions, found {len(sources)}\"\n    )\n\nfor source in sources:\n\n    exe = source.with_suffix(\".exe\")\n\n    proc = subprocess.run(\n        [\n            \"g++\",\n            \"-std=c++17\",\n            \"-O2\",\n            str(source),\n            \"-o\",\n            str(exe)\n        ],\n        capture_output=True,\n        text=True\n    )\n\n    if proc.returncode != 0:\n        print(f\"Compilation failed: {source.name}\")\n        print(proc.stderr)\n        raise SystemExit(proc.returncode)\n\n    print(f\"COMPILED: {source.name}\")\n\nprint(\"All eight reference solutions compiled successfully.\")\n"
+      ],
+      "started_at_utc": "2026-11-01T10:04:58Z",
+      "finished_at_utc": "2026-11-01T10:05:20Z",
+      "duration_seconds": 21.931807,
+      "exit_code": 0,
+      "stdout": "COMPILED: T01.cpp\nCOMPILED: T02.cpp\nCOMPILED: T03.cpp\nCOMPILED: T04.cpp\nCOMPILED: T05.cpp\nCOMPILED: T06.cpp\nCOMPILED: T07.cpp\nCOMPILED: T08.cpp\nAll eight reference solutions compiled successfully.\n",
+      "stderr": "",
+      "status": "success",
+      "stage_case_count": 8
+    },
+    {
+      "stage": "public_tests",
+      "command": [
+        "C:\\Users\\acer\\AppData\\Local\\Programs\\Python\\Python314\\python.exe",
+        "-c",
+        "\nimport subprocess\nimport sys\n\nfrom pathlib import Path\n\nfrom graders.correctness import (\n    validate_topological_order,\n    validate_lexicographic_topological_order\n)\n\nroot = Path(r\"C:\\Users\\acer\\OneDrive\\Desktop\\ConstraintFlip\")\ntask_root = root / \"tasks\"\nreference_root = root / \"reference\"\n\ntask_dirs = sorted(\n    p for p in task_root.iterdir()\n    if p.is_dir()\n)\n\nfor task_dir in task_dirs:\n\n    task_id = task_dir.name.split(\"_\")[0]\n\n    if task_id not in {f\"T{i:02d}\" for i in range(1, 9)}:\n        continue\n\n    ref_exe = reference_root / f\"{task_id}.exe\"\n\n    if not ref_exe.exists():\n        raise SystemExit(\n            f\"Missing compiled reference: {ref_exe}\"\n        )\n\n    test_files = sorted(\n        (task_dir / \"tests\").glob(\"*.in\")\n    )\n\n    for inp_path in test_files:\n\n        out_path = inp_path.with_suffix(\".out\")\n\n        if not out_path.exists():\n            raise SystemExit(\n                f\"Missing expected output: {out_path}\"\n            )\n\n        data = inp_path.read_text(encoding=\"utf-8\")\n        expected = out_path.read_text(encoding=\"utf-8\")\n\n        got = subprocess.run(\n            [str(ref_exe)],\n            input=data,\n            capture_output=True,\n            text=True,\n            check=False\n        )\n\n        if got.returncode != 0:\n            raise SystemExit(\n                f\"{task_id} runtime failure: {inp_path.name}\"\n            )\n\n        if task_id == \"T07\":\n\n            valid = validate_topological_order(\n                \"T07\",\n                data,\n                got.stdout\n            )\n\n        elif task_id == \"T08\":\n\n            valid = validate_lexicographic_topological_order(\n                \"T08\",\n                data,\n                got.stdout\n            )\n\n        else:\n\n            valid = (\n                got.stdout.strip() == expected.strip()\n            )\n\n        if not valid:\n            raise SystemExit(\n                f\"{task_id} public test failed: {inp_path.name}\\n\"\n                f\"Expected: {expected.strip()!r}\\n\"\n                f\"Actual:   {got.stdout.strip()!r}\"\n            )\n\nprint(\"All public tests passed.\")\n"
+      ],
+      "started_at_utc": "2026-11-01T10:05:20Z",
+      "finished_at_utc": "2026-11-01T10:05:58Z",
+      "duration_seconds": 38.485732,
+      "exit_code": 0,
+      "stdout": "All public tests passed.\n",
+      "stderr": "",
+      "status": "success",
+      "stage_case_count": 1639
+    },
+    {
+      "stage": "generate_hidden_tests",
+      "command": [
+        "C:\\Users\\acer\\AppData\\Local\\Programs\\Python\\Python314\\python.exe",
+        "C:\\Users\\acer\\OneDrive\\Desktop\\ConstraintFlip\\validation\\generate_hidden_tests.py"
+      ],
+      "started_at_utc": "2026-11-01T10:05:58Z",
+      "finished_at_utc": "2026-11-01T10:06:03Z",
+      "duration_seconds": 4.304638,
+      "exit_code": 0,
+      "stdout": "Generated: make_t01_cases\nGenerated: make_t02_cases\nGenerated: make_t03_cases\nGenerated: make_t04_cases\nGenerated: make_t05_cases\nGenerated: make_t06_cases\nGenerated: make_t07_cases\nGenerated: make_t08_cases\n\nHidden tests generated successfully.\n",
+      "stderr": "",
+      "status": "success",
+      "stage_case_count": null
+    },
+    {
+      "stage": "differential_tests",
+      "command": [
+        "C:\\Users\\acer\\AppData\\Local\\Programs\\Python\\Python314\\python.exe",
+        "C:\\Users\\acer\\OneDrive\\Desktop\\ConstraintFlip\\validation\\differential_test.py"
+      ],
+      "started_at_utc": "2026-11-01T10:06:03Z",
+      "finished_at_utc": "2026-11-01T10:09:20Z",
+      "duration_seconds": 197.782061,
+      "exit_code": 0,
+      "stdout": "validated 8004 random differential cases\ntask case counts: T01:1004, T02:1000, T03:1000, T04:1000, T05:1000, T06:1000, T07:1000, T08:1000\n",
+      "stderr": "",
+      "status": "success",
+      "stage_case_count": null
+    },
+    {
+      "stage": "grader_validation",
+      "command": [
+        "C:\\Users\\acer\\AppData\\Local\\Programs\\Python\\Python314\\python.exe",
+        "C:\\Users\\acer\\OneDrive\\Desktop\\ConstraintFlip\\validation\\test_grader.py"
+      ],
+      "started_at_utc": "2026-11-01T10:09:20Z",
+      "finished_at_utc": "2026-11-01T10:10:52Z",
+      "duration_seconds": 91.379042,
+      "exit_code": 1,
+      "stdout": "============================================================\nCONSTRAINTFLIP GRADER VALIDATION\n============================================================\n\n1. REFERENCE SOLUTIONS\nT01: 209 reference fixtures passed\nT02: 206 reference fixtures passed\nT03: 204 reference fixtures passed\nT04: 204 reference fixtures passed\nT05: 204 reference fixtures passed\nT06: 204 reference fixtures passed\nT07: 204 reference fixtures passed\nT08: 204 reference fixtures passed\n\n2. ALTERNATIVE VALID SOLUTIONS\nPASS: Alternative valid solution T01\nPASS: Alternative valid solution T03\nPASS: Alternative valid solution T05\n\n3. WRONG OUTPUT REJECTION\n\nGRADER REJECTION TESTS\nPASS: T01 rejected incorrect output\nPASS: T02 rejected incorrect output\nPASS: T03 rejected incorrect output\nPASS: T04 rejected incorrect output\nPASS: T05 rejected incorrect output\nPASS: T06 rejected incorrect output\nPASS: T07 rejected incorrect output\nPASS: T08 rejected incorrect output\n\n4. SPECIAL VALIDATOR TESTS\n",
+      "stderr": "Traceback (most recent call last):\n  File \"C:\\Users\\acer\\OneDrive\\Desktop\\ConstraintFlip\\validation\\test_grader.py\", line 694, in <module>\n    main()\n    ~~~~^^\n  File \"C:\\Users\\acer\\OneDrive\\Desktop\\ConstraintFlip\\validation\\test_grader.py\", line 678, in main\n    test_t06_sentinel_safety()\n    ~~~~~~~~~~~~~~~~~~~~~~~~^^\n  File \"C:\\Users\\acer\\OneDrive\\Desktop\\ConstraintFlip\\validation\\test_grader.py\", line 367, in test_t06_sentinel_safety\n    assert \" \".join(out.stdout.split()) == \" \".join(expected.split()), (\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: T06 sentinel safety failed:\n0\n1\n-2\n-2\nUNREACHABLE\n\n",
+      "status": "failed",
+      "stage_case_count": null
+    },
+    {
+      "stage": "t07_validation",
+      "command": [
+        "C:\\Users\\acer\\AppData\\Local\\Programs\\Python\\Python314\\python.exe",
+        "-c",
+        "\nimport graders.correctness as corr\n\ninp = (\n    \"4 4\\n\"\n    \"1 2\\n\"\n    \"1 3\\n\"\n    \"2 4\\n\"\n    \"3 4\\n\"\n)\n\nvalid_orders = [\n    \"1 2 3 4\\n\",\n    \"1 3 2 4\\n\",\n]\n\nfor order in valid_orders:\n    assert corr.validate_topological_order(\n        \"T07\",\n        inp,\n        order\n    ), f\"Rejected valid ordering: {{order!r}}\"\n\ninvalid_order = \"4 3 2 1\\n\"\n\nassert not corr.validate_topological_order(\n    \"T07\",\n    inp,\n    invalid_order\n), \"Accepted invalid topological ordering\"\n\nprint(\"T07 semantic validation passed\")\n"
+      ],
+      "started_at_utc": "2026-11-01T10:10:52Z",
+      "finished_at_utc": "2026-11-01T10:10:52Z",
+      "duration_seconds": 0.099589,
+      "exit_code": 0,
+      "stdout": "T07 semantic validation passed\n",
+      "stderr": "",
+      "status": "success",
+      "stage_case_count": 4
+    },
+    {
+      "stage": "t08_validation",
+      "command": [
+        "C:\\Users\\acer\\AppData\\Local\\Programs\\Python\\Python314\\python.exe",
+        "-c",
+        "\nimport graders.correctness as corr\n\ninp = (\n    \"4 4\\n\"\n    \"1 2\\n\"\n    \"1 3\\n\"\n    \"2 4\\n\"\n    \"3 4\\n\"\n)\n\ncorrect = \"1 2 3 4\\n\"\nwrong = \"1 3 2 4\\n\"\n\nassert corr.validate_lexicographic_topological_order(\n    \"T08\",\n    inp,\n    correct\n)\n\nassert not corr.validate_lexicographic_topological_order(\n    \"T08\",\n    inp,\n    wrong\n)\n\nprint(\"T08 lexicographic validation passed\")\n"
+      ],
+      "started_at_utc": "2026-11-01T10:10:52Z",
+      "finished_at_utc": "2026-11-01T10:10:52Z",
+      "duration_seconds": 0.084939,
+      "exit_code": 0,
+      "stdout": "T08 lexicographic validation passed\n",
+      "stderr": "",
+      "status": "success",
+      "stage_case_count": 2
+    },
+    {
+      "stage": "t06_consistency",
+      "command": [
+        "internal validation"
+      ],
+      "started_at_utc": "2026-11-01T10:10:52Z",
+      "finished_at_utc": "2026-11-01T10:10:52Z",
+      "duration_seconds": 0.001401,
+      "exit_code": 0,
+      "stdout": "T06 consistency passed\n",
+      "stderr": "",
+      "status": "success",
+      "stage_case_count": 1
+    },
+    {
+      "stage": "negative_tests",
+      "command": [
+        "C:\\Users\\acer\\AppData\\Local\\Programs\\Python\\Python314\\python.exe",
+        "-c",
+        "\nimport subprocess\n\nfrom pathlib import Path\n\nroot = Path(r\"C:\\Users\\acer\\OneDrive\\Desktop\\ConstraintFlip\")\nvalidation_dir = root / \"validation\"\n\n# Incorrect answer detection\nwrong_cpp = validation_dir / \"wrong_output.cpp\"\n\nwrong_cpp.write_text(\n    \"#include <iostream>\\n\"\n    \"int main() { std::cout << 0 << std::endl; }\\n\",\n    encoding=\"utf-8\"\n)\n\nwrong_exe = validation_dir / \"wrong_output.exe\"\n\ncp = subprocess.run(\n    [\"g++\", \"-std=c++17\", \"-O2\", str(wrong_cpp), \"-o\", str(wrong_exe)],\n    capture_output=True,\n    text=True\n)\n\nassert cp.returncode == 0, cp.stderr\n\nout = subprocess.run(\n    [str(wrong_exe)],\n    input=\"4 10\\n1 2 3 4\\n\",\n    capture_output=True,\n    text=True\n)\n\nassert out.stdout.strip() != \"1\"\n\n\n# Compilation failure detection\nbad_cpp = validation_dir / \"bad_compile.cpp\"\n\nbad_cpp.write_text(\n    \"int main() { return ; }\",\n    encoding=\"utf-8\"\n)\n\ncp2 = subprocess.run(\n    [\"g++\", \"-std=c++17\", \"-O2\", str(bad_cpp),\n     \"-o\", str(validation_dir / \"bad_compile.exe\")],\n    capture_output=True,\n    text=True\n)\n\nassert cp2.returncode != 0\n\n\n# Runtime failure detection\nrt_cpp = validation_dir / \"runtime_error.cpp\"\n\nrt_cpp.write_text(\n    \"#include <iostream>\\n\"\n    \"int main() { int x = 0; std::cout << 1 / x; }\",\n    encoding=\"utf-8\"\n)\n\nrt_exe = validation_dir / \"runtime_error.exe\"\n\ncp3 = subprocess.run(\n    [\"g++\", \"-std=c++17\", \"-O2\", str(rt_cpp), \"-o\", str(rt_exe)],\n    capture_output=True,\n    text=True\n)\n\nassert cp3.returncode == 0, cp3.stderr\n\nrt = subprocess.run(\n    [str(rt_exe)],\n    input=\"\",\n    capture_output=True,\n    text=True,\n    check=False\n)\n\nassert rt.returncode != 0\n\n\n# Timeout detection\ntimeout_cpp = validation_dir / \"timeout.cpp\"\n\ntimeout_cpp.write_text(\n    \"#include <iostream>\\n\"\n    \"int main() { while (true) {} }\",\n    encoding=\"utf-8\"\n)\n\ntimeout_exe = validation_dir / \"timeout.exe\"\n\ncp4 = subprocess.run(\n    [\"g++\", \"-std=c++17\", \"-O2\", str(timeout_cpp),\n     \"-o\", str(timeout_exe)],\n    capture_output=True,\n    text=True\n)\n\nassert cp4.returncode == 0, cp4.stderr\n\ntry:\n    subprocess.run(\n        [str(timeout_exe)],\n        input=\"\",\n        capture_output=True,\n        text=True,\n        timeout=1.0,\n        check=False\n    )\n\nexcept subprocess.TimeoutExpired:\n    pass\n\nelse:\n    raise AssertionError(\"Timeout detection did not trigger\")\n\nprint(\"Negative tests passed\")\n"
+      ],
+      "started_at_utc": "2026-11-01T10:10:52Z",
+      "finished_at_utc": "2026-11-01T10:10:58Z",
+      "duration_seconds": 6.567256,
+      "exit_code": 0,
+      "stdout": "Negative tests passed\n",
+      "stderr": "",
+      "status": "success",
+      "stage_case_count": 4
+    }
+  ]
+}

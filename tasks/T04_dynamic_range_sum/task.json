@@ -1,0 +1,19 @@
+{
+  "id": "T04",
+  "title": "Dynamic Range Sum",
+  "category": "range_query",
+  "expected_algorithm": "fenwick_tree",
+  "difficulty": "medium",
+  "constraints": {
+    "n": "1 <= n <= 200000",
+    "m": "1 <= m <= 200000",
+    "ai": "-10^9 <= ai <= 10^9",
+    "queries": "Each query is either point update or range sum query."
+  },
+  "input_format": "The first line contains n and m. The second line contains n integers a1..an. Each of the next m lines contains either 'U x v' or 'Q l r'.",
+  "output_format": "For each 'Q' query, print the sum of a[l..r].",
+  "notes": [
+    "The array is mutable via point assignments.",
+    "This task is the dynamic counterpart to T03 and expects an asymptotically suitable data structure such as a Fenwick tree."
+  ]
+}

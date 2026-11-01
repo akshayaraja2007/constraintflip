@@ -1,0 +1,21 @@
+{
+  "id": "T06",
+  "title": "DAG Shortest Paths with Negative Edges",
+  "category": "graph",
+  "expected_algorithm": "topological_sort_shortest_path",
+  "difficulty": "medium",
+  "constraints": {
+    "n": "1 <= n <= 200000",
+    "m": "0 <= m <= 200000",
+    "w": "-10^9 <= w <= 10^9",
+    "src": "1 <= src <= n",
+    "is_dag": "The graph is guaranteed to be a DAG."
+  },
+  "input_format": "The first line contains n, m, and src. Each of the next m lines contains u, v, and w describing a directed edge u -> v with weight w.",
+  "output_format": "Print n lines. For each vertex i, print the shortest distance from src to i if it is reachable; otherwise print UNREACHABLE.",
+  "notes": [
+    "The graph is acyclic but may contain negative edge weights.",
+    "This task invalidates ordinary Dijkstra and expects a topological relaxation approach.",
+    "UNREACHABLE is used instead of a numeric sentinel because a reachable shortest distance can legally be -2 under the constraints."
+  ]
+}
